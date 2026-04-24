@@ -138,7 +138,9 @@
             missions.push(newMission);
             localStorage.setItem('foco_missions', JSON.stringify(missions));
 
-            alert(`任務「${title}」已建立！`);
+            // alert(`任務「${title}」已建立！`);
+
+            window.location.href = `Focus_Timer.html?id=${newMission.id}`;
             
             // 建立成功後，導向該任務的內容頁面 
             // window.location.href = `mission_content.html?id=${newMission.id}`;

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCO - Mission List</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --accent-color: #a29bfe;
+            --drawer-width: 250px;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* 防止側邊欄彈出時頁面滾動 */
+        }
+
+        /* --- Hamburger Menu Style --- */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--drawer-width));
+            width: var(--drawer-width);
+            height: 100%;
+            background: var(--card-bg);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: #f1f2f6;
+            color: var(--primary-color);
+        }
+
+        /* 遮罩層 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* --- Original Style --- */
+        .nav-bar {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border-bottom: 1px solid #eee;
+            z-index: 100;
+        }
+
+        .menu-icon { font-size: 1.5rem; cursor: pointer; margin-right: 15px; z-index: 101; }
+        .page-title { font-size: 1.2rem; font-weight: bold; flex-grow: 1; }
+
+        .filter-section { padding: 15px 20px; background: var(--card-bg); }
+        .search-bar { width: 100%; padding: 12px; border: 1px solid #dfe6e9; border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; font-size: 1rem; background: #f1f2f6; }
+        .tool-row { display: flex; justify-content: space-between; align-items: center; }
+        .sort-select { padding: 5px 10px; border: 1px solid #dfe6e9; border-radius: 5px; color: #636e72; }
+
+        .mission-container { flex-grow: 1; padding: 20px; overflow-y: auto; }
+        .mission-item { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid var(--accent-color); cursor: pointer; transition: transform 0.1s; }
+        .mission-item:active { transform: scale(0.98); }
+        .mission-info h4 { margin: 0; font-size: 1rem; }
+        .mission-info p { margin: 5px 0 0; font-size: 0.8rem; color: #b2bec3; }
+
+        .fab-add { position: fixed; right: 20px; bottom: 30px; width: 60px; height: 60px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); cursor: pointer; border: none; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <nav class="side-menu" id="side-menu">
+        <a href="Home_Page.html" class="menu-item">🏠 首頁</a>
+        <a href="Farm.html" class="menu-item">🌾 農場</a>
+        <a href="Stats.html" class="menu-item">📊 統計</a>
+        <a href="Mission_List.html" class="menu-item" style="background: #f1f2f6; color: var(--primary-color);">📋 任務列表</a>
+    </nav>
+
+    <div class="nav-bar">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="page-title">任務清單</div>
+    </div>
+
+    <div class="filter-section">
+        <input type="text" class="search-bar" placeholder="搜尋任務...">
+        <div class="tool-row">
+            <select class="sort-select">
+                <option>排序方式：最新日期</option>
+                <option>排序方式：專注時長</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mission-container" id="mission-list">
+        <div class="mission-item" onclick="selectMission('撰寫資管專案報告')">
+            <div class="mission-info">
+                <h4>撰寫資管專案報告</h4>
+                <p>上次專注：2 小時前</p>
+            </div>
+            <span>⏱️ 25m</span>
+        </div>
+    </div>
+
+    <button class="fab-add" onclick="addNewMission()">+</button>
+
+    <script>
+        // 切換選單顯示狀態
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('overlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function selectMission(title) {
+            // 通往Mission_Content.html
+            window.location.href = `Mission_Content.html?title=${encodeURIComponent(title)}`;
+        }
+
+        function addNewMission() {
+            window.location.href = `Add_Mission.html`;
+        }
+    </script>
+</body>
+</html>
