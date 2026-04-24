@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCO - Add Mission</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --border-color: #dfe6e9;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top Navigation */
+        .nav-bar {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .back-btn { font-size: 1.5rem; cursor: pointer; margin-right: 15px; }
+        .page-title { font-size: 1.2rem; font-weight: bold; }
+
+        /* Form Container */
+        .form-container {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #636e72;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        textarea {
+            resize: none;
+            height: 150px;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+            margin-top: auto;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="back-btn" onclick="history.back()">←</div>
+        <div class="page-title">建立新任務</div>
+    </div>
+
+    <div class="form-container">
+        <div class="input-group">
+            <label for="mission-title">任務標題 (Mission Title)</label>
+            <input type="text" id="mission-title" placeholder="例如：撰寫期末報告...">
+        </div>
+
+        <div class="input-group">
+            <label for="mission-desc">任務內容 (Mission Description)</label>
+            <textarea id="mission-desc" placeholder="詳細描述你想完成的步驟..."></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="saveMission()">儲存任務並開始</button>
+    </div>
+
+    <script>
+        function saveMission() {
+            const title = document.getElementById('mission-title').value;
+            const desc = document.getElementById('mission-desc').value;
+
+            if (!title) {
+                alert("請至少輸入任務標題！");
+                return;
+            }
+
+            // 模擬儲存邏輯
+            const newMission = {
+                id: Date.now(),
+                title: title,
+                description: desc,
+                progress: 0
+            };
+
+            // 在 MVP 階段，我們可以暫存於 LocalStorage
+            let missions = JSON.parse(localStorage.getItem('foco_missions')) || [];
+            missions.push(newMission);
+            localStorage.setItem('foco_missions', JSON.stringify(missions));
+
+            alert(`任務「${title}」已建立！`);
+            
+            // 建立成功後，導向該任務的內容頁面 
+            // window.location.href = `mission_content.html?id=${newMission.id}`;
+        }
+    </script>
+</body>
+</html>

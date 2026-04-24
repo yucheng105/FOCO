@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCO - Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            padding: 20px;
+        }
+
+        .nav-bar { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { font-size: 1.2rem; cursor: pointer; margin-right: 15px; }
+
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .chart-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: block;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        canvas { width: 100% !important; max-height: 250px; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="back-btn" onclick="history.back()">←</div>
+        <strong id="mission-display">[Mission_Title]</strong> [cite: 39]
+    </div>
+
+    <div class="chart-card">
+        <span class="chart-title">分心原因分析</span>
+        <canvas id="distractionPieChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <span class="chart-title">本週專注趨勢 (分鐘)</span>
+        <canvas id="focusBarChart"></canvas>
+    </div>
+
+    <script>
+        // 模擬數據
+        const distractionData = {
+            labels: ['完全專注', '手機誘惑', '雜念發呆', '外部干擾'],
+            datasets: [{
+                data: [65, 15, 10, 10],
+                backgroundColor: ['#6c5ce7', '#fab1a0', '#ffeaa7', '#dfe6e9']
+            }]
+        };
+
+        const weeklyFocusData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: '專注時長',
+                data: [120, 150, 90, 180, 210, 60, 45],
+                backgroundColor: '#a29bfe',
+                borderRadius: 8
+            }]
+        };
+
+        // 初始化圓餅圖 
+        new Chart(document.getElementById('distractionPieChart'), {
+            type: 'pie',
+            data: distractionData,
+            options: { plugins: { legend: { position: 'bottom' } } }
+        });
+
+        // 初始化長條圖 
+        new Chart(document.getElementById('focusBarChart'), {
+            type: 'bar',
+            data: weeklyFocusData,
+            options: { 
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

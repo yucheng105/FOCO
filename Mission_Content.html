@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCO - Mission Content</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .nav-bar {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+        }
+
+        .menu-icon { font-size: 1.5rem; cursor: pointer; margin-right: 15px; }
+
+        /* Mission Header */
+        .mission-header {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--card-bg);
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .mission-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--primary-color);
+        }
+
+        /* Progress Chart - Using Pure CSS */
+        .chart-container {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* conic-gradient 動態模擬進度圖 */
+            background: conic-gradient(var(--primary-color) 70%, #dfe6e9 0);
+            position: relative;
+        }
+
+        .chart-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Timer Setup */
+        .timer-setup {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .duration-display {
+            font-size: 3rem;
+            font-weight: 200;
+            margin-bottom: 20px;
+        }
+
+        .adjust-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .btn-adjust {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            background: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Start Button */
+        .btn-start-focus {
+            width: 80%;
+            max-width: 300px;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="menu-icon">☰</div>
+        <span>任務內容</span>
+    </div>
+
+    <div class="mission-header">
+        <div class="mission-name" id="mission-title">撰寫資管專案報告</div>
+        <p>當前累積進度</p>
+        <div class="chart-container">
+            <div class="chart-inner">
+                <span id="percent-text">70%</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="timer-setup">
+        <p>設定本次專注時長</p>
+        <div class="duration-display"><span id="minutes">25</span>:00</div>
+        
+        <div class="adjust-row">
+            <button class="btn-adjust" onclick="adjustTime(-5)">-</button>
+            <button class="btn-adjust" onclick="adjustTime(5)">+</button>
+        </div>
+
+        <button class="btn-start-focus" onclick="startFocus()">開始專注</button>
+    </div>
+
+    <script>
+        let duration = 25;
+
+        function adjustTime(val) {
+            duration = Math.max(5, Math.min(120, duration + val));
+            document.getElementById('minutes').innerText = duration;
+        }
+
+        function startFocus() {
+            const task = document.getElementById('mission-title').innerText;
+            alert(`目標：${task}\n時長：${duration} 分鐘\n\n即時啟動計時器...`);
+            // 導向正式的計時器介面
+        }
+    </script>
+</body>
+</html>

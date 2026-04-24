@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCO - Reflection</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-color: #f9f9fb;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .reflection-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+
+        h2 { text-align: center; color: var(--primary-color); margin-top: 0; }
+        .section-title { font-weight: bold; margin: 20px 0 10px; display: block; }
+
+        /* 完成度 Slider */
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+            accent-color: var(--primary-color);
+        }
+
+        /* 分心標籤選擇 */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            padding: 8px 16px;
+            border: 1px solid #dfe6e9;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .tag.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* 獎勵展示區 */
+        .rewards-preview {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f1f2f6;
+            border-radius: 12px;
+            text-align: center;
+            display: none; /* 點擊後才顯示 */
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 25px;
+            cursor: pointer;
+        }
+
+        .mood-row {
+            display: flex;
+            justify-content: space-around;
+            font-size: 1.5rem;
+        }
+
+        .mood-item { cursor: pointer; opacity: 0.4; transition: 0.2s; }
+        .mood-item.active { opacity: 1; transform: scale(1.2); }
+    </style>
+</head>
+<body>
+
+    <div class="reflection-card">
+        <h2 id="task-name">任務達成！</h2> 
+        
+        <span class="section-title">這輪完成度：<span id="percent-val">80</span>%</span>
+        <input type="range" class="slider" min="0" max="100" value="80" oninput="updatePercent(this.value)">
+
+        <span class="section-title">剛剛有被什麼干擾嗎？(多選)</span>
+        <div class="tag-container" id="distraction-tags">
+            <div class="tag" onclick="toggleTag(this)">📱 手機社群</div>
+            <div class="tag" onclick="toggleTag(this)">☕ 生理需求</div>
+            <div class="tag" onclick="toggleTag(this)">💭 雜念發呆</div>
+            <div class="tag" onclick="toggleTag(this)">🗣️ 他人中斷</div>
+            <div class="tag" onclick="toggleTag(this)">✅ 完全專注</div>
+        </div>
+
+        <span class="section-title">現在的心情？</span>
+        <div class="mood-row">
+            <span class="mood-item" onclick="selectMood(this)">😫</span>
+            <span class="mood-item" onclick="selectMood(this)">😐</span>
+            <span class="mood-item active" onclick="selectMood(this)">😊</span>
+            <span class="mood-item" onclick="selectMood(this)">🔥</span>
+        </div>
+
+        <div class="rewards-preview" id="rewards-box">
+            <div>獲得 💎 x 5</div>
+            <div>寵物經驗值 + 20</div>
+        </div>
+
+        <button class="btn-submit" onclick="showRewards()">領取獎勵並結算</button> 
+    </div>
+
+    <script>
+        function updatePercent(v) { document.getElementById('percent-val').innerText = v; }
+
+        function toggleTag(el) { el.classList.toggle('active'); }
+
+        function selectMood(el) {
+            document.querySelectorAll('.mood-item').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function showRewards() {
+            // 在此實作獎勵邏輯：基礎獎勵 + 無分心加乘 
+            const hasDistraction = document.querySelectorAll('.tag.active').length > 0;
+            const rewardsBox = document.getElementById('rewards-box');
+            
+            rewardsBox.style.display = 'block';
+            document.querySelector('.btn-submit').innerText = "回首頁";
+            document.querySelector('.btn-submit').onclick = () => {
+                alert("數據已同步至伺服器。");
+                // window.location.href = 'home.html';
+            };
+        }
+    </script>
+</body>
+</html>
