@@ -3,55 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOCO - Farm</title>
+    <title>FOCO - Pet Farm Optimized</title>
     <style>
         :root {
             --primary-color: #6c5ce7;
-            --bg-gradient: linear-gradient(to bottom, #e1f5fe, #e8f5e9);
-            --card-bg: #ffffff;
+            --primary-light: #a29bfe;
+            --bg-gradient: linear-gradient(135deg, #e1f5fe 0%, #e8f5e9 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
             --text-main: #2d3436;
-            --drawer-width: 250px;
+            --text-sub: #636e72;
+            --accent-gold: #f1c40f;
+            --drawer-width: 280px; /* 修正：定義選單寬度 */
         }
 
         body {
             margin: 0;
-            font-family: -apple-system, sans-serif;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-gradient);
             color: var(--text-main);
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            align-items: center;
+            overflow: hidden; /* 防止主頁面滾動 */
         }
 
-        /* --- Hamburger Menu Style --- */
+        /* --- Hamburger Menu --- */
         .side-menu {
             position: fixed;
             top: 0;
             left: calc(-1 * var(--drawer-width));
             width: var(--drawer-width);
             height: 100%;
-            background: var(--card-bg);
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            transition: left 0.3s ease;
+            background: white;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+            z-index: 1100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             padding-top: 60px;
         }
 
         .side-menu.active {
-            left: 0;
+            transform: translateX(var(--drawer-width));
         }
 
         .menu-item {
-            padding: 15px 25px;
+            padding: 18px 30px;
             font-size: 1.1rem;
             color: var(--text-main);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 15px;
+            transition: background 0.2s;
         }
 
         .menu-item:hover {
@@ -65,143 +71,301 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px);
             display: none;
-            z-index: 999;
+            z-index: 1050;
         }
 
-        .overlay.active {
-            display: block;
-        }
+        .overlay.active { display: block; }
 
-        /* --- Farm UI Elements --- */
         .nav-bar {
+            width: 100%;
+            max-width: 450px;
             padding: 15px 20px;
             display: flex;
             align-items: center;
-            z-index: 100;
+            box-sizing: border-box;
         }
 
-        .menu-icon { font-size: 1.5rem; cursor: pointer; margin-right: 15px; }
+        .menu-icon { font-size: 1.8rem; cursor: pointer; margin-right: 15px; }
 
-        .user-header {
-            padding: 0 20px;
-            margin-bottom: 20px;
+        /* --- 頂部與寵物區 --- */
+        .header-section {
+            width: 100%;
+            max-width: 450px;
+            padding: 10px 20px;
+            text-align: center;
+            box-sizing: border-box;
         }
 
-        .user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .rank-badge { background: #f1c40f; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; color: white; font-weight: bold; }
-        .petname { font-weight: bold; font-size: 1.2rem; }
+        .petname-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 24px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+        }
 
-        .xp-bar-bg { height: 10px; background: rgba(0,0,0,0.1); border-radius: 5px; overflow: hidden; }
-        .xp-bar-fill { height: 100%; background: var(--primary-color); width: 45%; }
+        .hp-bar-container {
+            width: 100%;
+            height: 14px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+            border: 2px solid white;
+        }
 
-        /* Pet Area */
-        .pet-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7675, #fab1a0);
+            width: 75%;
+        }
+
+        .main-display {
             position: relative;
+            width: 100%;
+            max-width: 450px;
+            flex: 1.2; /* 縮小寵物區佔比 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .pet-display {
-            font-size: 6rem;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-            animation: bounce 2s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Backpack / Inventory Area */
-        .inventory-section {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 30px 30px 0 0;
-            padding: 20px;
-            min-height: 200px;
-        }
-
-        .inventory-title { font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .reward-item {
-            aspect-ratio: 1/1;
+        .pack-btn {
+            position: absolute;
+            left: 25px;
+            top: 10px;
+            width: 55px;
+            height: 55px;
             background: white;
-            border-radius: 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            border: none;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .pet-circle {
+            width: 220px;
+            height: 220px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 6rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            animation: floating 3s infinite ease-in-out;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- 統計資訊區 (調高比例) --- */
+        .stats-section {
+            width: 100%;
+            max-width: 450px;
+            flex: 1.0; /* 增加統計區的高度比例 */
+            padding: 30px 25px;
+            box-sizing: border-box;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 35px 35px 0 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .stat-tag {
+            flex: 1;
+            background: white;
+            padding: 12px 5px;
+            text-align: center;
+            font-size: 0.85rem;
+            border-radius: 15px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        /* --- 模擬長條圖 --- */
+        .chart-container {
+            width: 100%;
+            flex: 1;
+            background: rgba(255,255,255,0.5);
+            border-radius: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .bar {
+            width: 25px;
+            background: var(--primary-light);
+            border-radius: 8px 8px 4px 4px;
+            position: relative;
+            transition: height 1s ease-out;
+            animation: grow 1s ease-out;
+        }
+
+        .bar::after {
+            content: attr(data-label);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-sub);
+        }
+
+        .bar:nth-child(even) { background: var(--primary-color); }
+
+        @keyframes grow {
+            from { height: 0; }
+        }
+
+        /* --- 背包彈窗 --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            width: 85%;
+            max-width: 340px;
+            text-align: center;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .food-item {
+            aspect-ratio: 1/1;
+            background: #f8f9fa;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 2rem;
             cursor: pointer;
         }
-
-        .reward-item.empty { background: rgba(255, 255, 255, 0.4); border: 1px dashed #ccc; }
     </style>
 </head>
 <body>
 
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    
     <nav class="side-menu" id="side-menu">
         <a href="Home_Page.html" class="menu-item">🏠 首頁</a>
         <a href="Farm.html" class="menu-item" style="background: #f1f2f6; color: var(--primary-color);">🌾 農場</a>
         <a href="Stats.html" class="menu-item">📊 統計</a>
-        <a href="Mission_List.html" class="menu-item">📋 任務列表</a>
+        <a href="Mission_List.html" class="menu-item">📋 任務</a>
     </nav>
 
     <div class="nav-bar">
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <span style="font-weight: bold;">我的農場</span>
+        <span style="font-weight: bold; font-size: 1.2rem;">我的農場</span>
     </div>
 
-    <div class="user-header">
-        <div class="user-row">
-            <span class="rank-badge">GOLD</span>
-            <span class="petname">小橘子</span>
+    <div class="header-section">
+        <div class="petname-badge">小橘子</div>
+        <div class="hp-bar-container">
+            <div class="hp-fill"></div>
         </div>
-        <div class="xp-bar-bg">
-            <div class="xp-bar-fill"></div>
+        <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 6px; font-weight: 500;">
+            Health Points: 75%
         </div>
-        <p style="font-size: 0.7rem; color: #636e72; margin-top: 5px;">Level 10 (450/1000 XP)</p>
+
     </div>
 
-    <div class="pet-container">
-        <div class="pet-display">🐱</div>
+    <div class="main-display">
+        <button class="pack-btn" onclick="togglePack()">
+            <span>🎒</span><span style="font-size: 0.6rem;">PACK</span>
+        </button>
+        <div class="pet-circle">🐱</div>
     </div>
 
-    <div class="inventory-section">
-        <div class="inventory-title">🎒 背包物品</div>
-        <div class="grid-container">
-            <div class="reward-item" onclick="useItem('🐟')">🐟</div>
-            <div class="reward-item" onclick="useItem('🧶')">🧶</div>
-            <div class="reward-item" onclick="useItem('🍖')">🍖</div>
-            <div class="reward-item empty"></div>
-            <div class="reward-item empty"></div>
-            <div class="reward-item empty"></div>
-            <div class="reward-item empty"></div>
-            <div class="reward-item empty"></div>
+    <div class="stats-section">
+        <div class="tag-row">
+            <div class="stat-tag" style="color: var(--primary-color);">🐱 貓咪族</div>
+            <div class="stat-tag">💪 力量 15</div>
+            <div class="stat-tag">⚡ 速度 20</div>
+        </div>
+        
+        <div class="chart-label">📊 每日陪伴寵物時長 (Min)</div>
+        
+        <div class="chart-container">
+            <div class="bar" style="height: 40%;" data-label="Mon"></div>
+            <div class="bar" style="height: 70%;" data-label="Tue"></div>
+            <div class="bar" style="height: 55%;" data-label="Wed"></div>
+            <div class="bar" style="height: 90%;" data-label="Thu"></div>
+            <div class="bar" style="height: 65%;" data-label="Fri"></div>
+            <div class="bar" style="height: 30%;" data-label="Sat"></div>
+            <div class="bar" style="height: 85%;" data-label="Sun"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="packModal">
+        <div class="modal-content">
+            <h3 style="margin:0">🎒 寵物背包</h3>
+            <div class="food-grid">
+                <div class="food-item" onclick="feed('🐟')">🐟</div>
+                <div class="food-item" onclick="feed('🍖')">🍖</div>
+                <div class="food-item" onclick="feed('🥛')">🥛</div>
+                <div class="food-item" onclick="feed('🍎')">🍎</div>
+                <div class="food-item" onclick="feed('🍪')">🍪</div>
+                <div class="food-item" style="background:#eee"></div>
+            </div>
+            <button onclick="togglePack()" style="border:none; padding:10px 20px; border-radius:10px; cursor:pointer">關閉</button>
         </div>
     </div>
 
     <script>
         function toggleMenu() {
-            const menu = document.getElementById('side-menu');
-            const overlay = document.getElementById('overlay');
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
+            document.getElementById('side-menu').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+        
+        function togglePack() {
+            const modal = document.getElementById('packModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        function useItem(item) {
-            alert('使用了 ' + item + '！寵物感到非常開心。');
+        function feed(item) {
+            alert('小橘子吃掉了 ' + item + '！');
+            togglePack();
         }
     </script>
 </body>
