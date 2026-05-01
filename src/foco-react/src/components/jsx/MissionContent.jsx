@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // 1. 引入導航 Hook
-import './MissionContent.css';
+import '../css/MissionContent.css';
 import Navbar from './Navbar';
 
 const MissionContent = () => {

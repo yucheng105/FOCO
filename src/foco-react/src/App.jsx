@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React from 'react';
-import HomePage from './components/HomePage';
-import AddMission from './components/AddMission';
-import Farm from './components/Farm';
-import FocusTimer from './components/FocusTimer';
-import MissionContent from './components/MissionContent';
-import MissionList from './components/MissionList';
-import Rewards from './components/Rewards';
-import Stats from './components/Stats';
+import HomePage from './components/jsx/HomePage';
+import AddMission from './components/jsx/AddMission';
+import Farm from './components/jsx/Farm';
+import FocusTimer from './components/jsx/FocusTimer';
+import MissionContent from './components/jsx/MissionContent';
+import MissionList from './components/jsx/MissionList';
+import Rewards from './components/jsx/Rewards';
+import Stats from './components/jsx/Stats';
 import './App.css';
 
 const App = () => {

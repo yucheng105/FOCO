@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto'; // 在 React 中建議使用 /auto 來自動載入所有組件
 import { useNavigate } from 'react-router-dom';
-import './Stats.css';
+import '../css/Stats.css';
 
 const Stats = () => {
     const navigate = useNavigate();

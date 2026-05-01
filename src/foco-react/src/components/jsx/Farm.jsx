@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Farm.css';
+import '../css/Farm.css';
 import { useNavigate } from 'react-router-dom'; // 1. 引入導航 Hook
 import Navbar from './Navbar';
 

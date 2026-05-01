@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import './MissionList.css';
+import '../css/MissionList.css';
 import Navbar from './Navbar';
 
 const MissionList = () => {

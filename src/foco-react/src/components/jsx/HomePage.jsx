@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // 1. 引入導航 Hook
-import './HomePage.css';
+import '../css/HomePage.css';
 
 const HomePage = () => {
     const navigate = useNavigate(); // 2. 初始化導航功能
