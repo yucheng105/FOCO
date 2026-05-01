@@ -1,0 +1,153 @@
+:root {
+    --primary-color: #6c5ce7;
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-main: #2d3436;
+    --rank-gold: #f1c40f;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.home-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header Section [cite: 1-4] */
+.header {
+    padding: 20px;
+    background: var(--card-bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-meta-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.username { 
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    color: var(--text-main);
+}
+
+/* Ranking 牌位徽章 [cite: 3] */
+.rank-badge {
+    width: 40px;
+    height: 40px;
+    background: var(--rank-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(241, 196, 15, 0.4);
+    border: 2px solid #fff;
+    position: relative;
+}
+
+.rank-badge::after {
+    content: 'Rank';
+    position: absolute;
+    bottom: -5px;
+    font-size: 0.5rem;
+    background: var(--text-main);
+    color: white;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.btn-farm-link {
+    background: #e8f5e9;
+    border: 1px solid #81c784;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+
+.btn-farm-link:hover { background: #c8e6c9; }
+
+.xp-container { width: 100%; }
+.xp-bar-bg { height: 12px; background: #dfe6e9; border-radius: 6px; overflow: hidden; margin-top: 5px; }
+.xp-bar-fill { height: 100%; background: var(--primary-color); width: 60%; transition: width 0.5s; }
+
+/* Farm Area [cite: 5, 7] */
+.farm-area {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #e1f5fe, #e8f5e9);
+    position: relative;
+}
+
+.pet-image {
+    width: 180px;
+    height: 180px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Control Section [cite: 6, 8, 9] */
+.controls {
+    padding: 25px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--card-bg);
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+}
+
+.btn-icon { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #636e72; transition: color 0.2s; }
+.btn-icon:hover { color: var(--primary-color); }
+
+.btn-start {
+    width: 75px;
+    height: 75px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    transition: transform 0.2s;
+}
+
+.btn-start:active { transform: scale(0.9); }

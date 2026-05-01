@@ -1,0 +1,50 @@
+:root {
+    --primary-color: #6c5ce7;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+}
+
+.stats-page {
+    margin: 0;
+    font-family: -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.nav-bar { 
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.back-btn { 
+    font-size: 1.2rem; 
+    cursor: pointer; 
+    margin-right: 15px; 
+}
+
+.chart-card {
+    background: var(--card-bg);
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+
+.chart-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    display: block;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
+}
+
+/* 為了讓圖表在 React 容器中保持大小適中 */
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+

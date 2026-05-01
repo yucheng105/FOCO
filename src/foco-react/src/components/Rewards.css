@@ -1,0 +1,89 @@
+:root {
+    --primary-color: #6c5ce7;
+    --bg-color: #f9f9fb;
+    --card-bg: #ffffff;
+    --text-main: #2d3436;
+}
+
+.rewards-page {
+    margin: 0;
+    font-family: -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reflection-card {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+}
+
+h2 { text-align: center; color: var(--primary-color); margin-top: 0; }
+.section-title { font-weight: bold; margin: 20px 0 10px; display: block; }
+
+/* 完成度 Slider */
+.slider {
+    width: 100%;
+    margin: 10px 0;
+    accent-color: var(--primary-color);
+}
+
+/* 分心標籤選擇 */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    padding: 8px 16px;
+    border: 1px solid #dfe6e9;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.tag.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 獎勵展示區 */
+.rewards-preview {
+    margin-top: 30px;
+    padding: 15px;
+    background: #f1f2f6;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 25px;
+    cursor: pointer;
+}
+
+.mood-row {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5rem;
+}
+
+.mood-item { cursor: pointer; opacity: 0.4; transition: 0.2s; }
+.mood-item.active { opacity: 1; transform: scale(1.2); }
